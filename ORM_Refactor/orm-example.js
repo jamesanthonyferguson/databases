@@ -4,20 +4,24 @@
  */
 
 var Sequelize = require("sequelize");
-var sequelize = new Sequelize("chatter", "root", "");
+var sequelize = new Sequelize("chatterbox", "root", "");
 /* TODO this constructor takes the database name, username, then password.
  * Modify the arguments if you need to */
 
 /* first define the data structure by giving property names and datatypes
  * See http://sequelizejs.com for other datatypes you can use besides STRING. */
 var User = sequelize.define('User', {
-  username: Sequelize.STRING
+  id: {type: Sequelize.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true},
+  username: {type: Sequelize.STRING, defaultValue: null},
+  message_id: {type: Sequelize.INTEGER, defaultValue: null}
 });
 
-var Message = sequelize.define('Message' {
-  userid: Sequelize.INTEGER,
-  text: Sequelize.STRING,
-  roomname: Sequelize.STRING
+var Message = sequelize.define('Message', {
+  id: {type: Sequelize.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true},
+  userid: {type: Sequelize.INTEGER, defaultValue: null},
+  roomname: {type: Sequelize.STRING, defaultValue: 'Lobby'},
+  message: {type: Sequelize.STRING, defaultValue: null},
+  time: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 });
 
 /* .sync() makes Sequelize create the database table for us if it doesn't
@@ -26,6 +30,7 @@ User.sync().success(function() {
   /* This callback function is called once sync succeeds. */
 
   // now instantiate an object and save it:
+
   var newUser = User.build({username: "Jean Valjean"});
   newUser.save().success(function() {
 
@@ -39,4 +44,13 @@ User.sync().success(function() {
       }
     });
   });
+});
+
+Message.sync().success(function(){
+
+  var newMessage = Message.build({/* ?? */});
+  newMessage.save().success(function(){
+    // On success do something
+  });
+
 });

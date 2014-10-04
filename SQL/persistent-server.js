@@ -25,6 +25,7 @@ var router = function(req, res) {
     } else if (method === 'GET') {
       handlers.getMessages(req, res);
     } else if (method === 'OPTIONS') {
+      console.log("THIS IS REQUESTING OPTIONS!!!!")
       handlers.sendOptionsResponse(req, res);
     }
   } else if (method === "GET" && path === "/"){
@@ -35,9 +36,9 @@ var router = function(req, res) {
     handlers.serveStatic(req, res, "app", "application/javascript")
   } else if (method === "GET" && path === "/client/scripts/config.js"){
     handlers.serveStatic(req, res, "config", "application/javascript")
-  } else if (method === "GET" && path === "/client/bower_components/underscore/underscore-min.js"){
+  } else if (method === "GET" && path === "/client/bower_components/underscore/underscore.js"){
     handlers.serveStatic(req, res, "_", "application/javascript")
-  } else if (method === "GET" && path === "/client/bower_components/jquery/jquery.min.js"){
+  } else if (method === "GET" && path === "/client/bower_components/jquery/jquery.js"){
     handlers.serveStatic(req, res, "jQuery", "application/javascript")
   } else if (method === "GET" && path === "/client/styles/styles.css") {
     handlers.serveStatic(req, res, "css", "text/css")

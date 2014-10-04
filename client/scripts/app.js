@@ -105,10 +105,10 @@ var app = {
     var userpart = String.prototype.slice.call(window.location.search, 10)
     console.log(messagePart);
     var message = {
-          username: userpart,
-          text: messagePart,
-          roomname: '<script>$("body").remove()</script>'
-        };
+      username: userpart,
+      text: messagePart,
+      roomname: "Lobby"
+    };
     app.send(message)
   }
 

@@ -12,8 +12,8 @@ var index = fs.readFileSync("../client/index.html");
 var css = fs.readFileSync("../client/styles/styles.css");
 var app = fs.readFileSync("../client/scripts/app.js");
 var config = fs.readFileSync("../client/scripts/config.js");
-var _ = fs.readFileSync("../client/bower_components/underscore/underscore-min.js");
-var jQuery = fs.readFileSync("../client/bower_components/jquery/jquery.min.js");
+var _ = fs.readFileSync("../client/bower_components/underscore/underscore.js");
+var jQuery = fs.readFileSync("../client/bower_components/jquery/jquery.js");
 
 exports.serveStatic = function(req, res, path, type) {
   var file = '';
@@ -21,22 +21,22 @@ exports.serveStatic = function(req, res, path, type) {
     case "index":
       file = index;
       console.log(index)
-      break
+      break;
     case "css":
       file = css
-      break
+      break;
     case "app":
       file = app
-      break
+      break;
     case "config":
       file = config
-      break
+      break;
     case "_":
       file = _
-      break
+      break;
     case "jQuery":
       file = jQuery
-      break
+      break;
     }
 
   serverHelpers.sendResponse(res, file, 200, type)
@@ -47,7 +47,8 @@ exports.serveStatic = function(req, res, path, type) {
 exports.postMessage = function(req, res) {
   // declare this variable so we can retain access to it throughout the entire promise chain.
   var message;
-  db.connect();
+  // db.disconnect();
+  // db.connect();
 
 
   var resultsCallback = function (results) {
@@ -56,7 +57,7 @@ exports.postMessage = function(req, res) {
         userid: results,
         roomname: message.roomname
       };
-      console.log(typeof chat.userid)
+      console.log(typeof chat.userid);
 
       saveMessage(chat.message, chat.userid, chat.roomname, function () {
         serverHelpers.sendResponse(res, message);
@@ -65,15 +66,15 @@ exports.postMessage = function(req, res) {
 
   parseData(req, function(_, msg) {
       message = msg;
-      console.log("1st: parsing data where msg:" + msg)
+      console.log("1st: parsing data where msg:" + msg);
       findUser(msg.username, function (err, results) {
         // no results/0 results
         if (!results || !results.length) {
-          console.log('HANDLER: no results - save user')
+          console.log('HANDLER: no results - save user');
           // create the user, then post the message
           saveUser(message.username, resultsCallback);
         } else {
-          console.log('not going to trigger')
+          console.log('not going to trigger');
           // user exists, post the message to this user
           resultsCallback(results);
         }
