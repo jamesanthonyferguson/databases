@@ -6,6 +6,42 @@ var saveMessage = db.saveMessage;
 var saveUser = db.saveUser;
 var findMessages = db.findAllMessages;
 var findUser = db.findUser;
+var fs = require("fs");
+
+var index = fs.readFileSync("../client/index.html");
+var css = fs.readFileSync("../client/styles/styles.css");
+var app = fs.readFileSync("../client/scripts/app.js");
+var config = fs.readFileSync("../client/scripts/config.js");
+var _ = fs.readFileSync("../client/bower_components/underscore/underscore-min.js");
+var jQuery = fs.readFileSync("../client/bower_components/jquery/jquery.min.js");
+
+exports.serveStatic = function(req, res, path, type) {
+  var file = '';
+  switch (path) {
+    case "index":
+      file = index;
+      console.log(index)
+      break
+    case "css":
+      file = css
+      break
+    case "app":
+      file = app
+      break
+    case "config":
+      file = config
+      break
+    case "_":
+      file = _
+      break
+    case "jQuery":
+      file = jQuery
+      break
+    }
+
+  serverHelpers.sendResponse(res, file, 200, type)
+}
+
 
 
 exports.postMessage = function(req, res) {

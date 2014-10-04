@@ -10,6 +10,7 @@ var serverHelpers = require('./server-helpers');
 
 var port = 3000;
 var ip = "127.0.0.1";
+ var usernameParam = new RegExp("\/\?username=[a-zA-Z0-9]*");
 
 var router = function(req, res) {
 
@@ -26,8 +27,22 @@ var router = function(req, res) {
     } else if (method === 'OPTIONS') {
       handlers.sendOptionsResponse(req, res);
     }
+  } else if (method === "GET" && path === "/"){
+    handlers.serveStatic(req, res, "index", "text/html")
+  } else if (method === "GET" && usernameParam.test(path)){
+    handlers.serveStatic(req, res, "index", "text/html")
+  } else if (method === "GET" && path === "/client/scripts/app.js"){
+    handlers.serveStatic(req, res, "app", "application/javascript")
+  } else if (method === "GET" && path === "/client/scripts/config.js"){
+    handlers.serveStatic(req, res, "config", "application/javascript")
+  } else if (method === "GET" && path === "/client/bower_components/underscore/underscore-min.js"){
+    handlers.serveStatic(req, res, "_", "application/javascript")
+  } else if (method === "GET" && path === "/client/bower_components/jquery/jquery.min.js"){
+    handlers.serveStatic(req, res, "jQuery", "application/javascript")
+  } else if (method === "GET" && path === "/client/styles/styles.css") {
+    handlers.serveStatic(req, res, "css", "text/css")
   } else {
-    handlers.sendResponse(res, '', 404);
+    serverHelpers.sendResponse(res, '', 404);
   }
 };
 

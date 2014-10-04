@@ -16,10 +16,19 @@ exports.collectData = function(request, cb){
   });
 };
 
-exports.sendResponse = function(response, obj, status){
+exports.sendResponse = function(response, obj, status, type, options){
   status = status || 200;
-  response.writeHead(status, headers);
+  var headers2 = headers;
+  if (options) {
+    headers2["Allow"] = "GET, POST, PUT, DELETE, OPTIONS"
+  }
+  headers2["Content-type"] = type || "application/json";
+  response.writeHead(status, headers2);
+  if (headers2["Content-type"]==="application/json") {
   var string = JSON.stringify(obj);
   console.log("Sending: %s", string);
   response.end(string);
+  } else {
+    response.end(obj)
+  }
 };

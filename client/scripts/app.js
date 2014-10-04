@@ -45,8 +45,9 @@ var app = {
       // data: {'order': '-createdAt'},
       contentType: 'json',
       success: function (data) {
-        console.log('chatterbox: Message received: ' + data);
         app.addMessage(data);
+        console.log('chatterbox: Message received: ' + data);
+        console.log(data)
       },
       error: function (data) {
         console.error('chatterbox: Failed to fetch');
@@ -59,30 +60,31 @@ var app = {
   },
 
   addMessage: function(data){
-
+    console.log('111111111111111')
     var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
-  };
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': '&quot;',
+      "'": '&#39;',
+      "/": '&#x2F;'
+    };
 
-  function escapeHtml(string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
-      return entityMap[s];
-    });
-  }
-
-    for (var i = 0; i < data.results.length; i++) {
-      var text = escapeHtml(data.results[i].text);
-      var user = escapeHtml(data.results[i].username);
-      if (app.friends.indexOf(user)!==-1) {
-        user = '<strong>' + user + '</strong>'
-      }
-      $('#chats').append(("<div><div class='message'>" +text+ "</div><div class='username'>" +user+ "</div><br/>"))
+    function escapeHtml(string) {
+      return String(string).replace(/[&<>"'\/]/g, function (s) {
+        return entityMap[s];
+      });
     }
+
+    for (var i = 0; i < data.length; i++) {
+      var text = escapeHtml(data[i].message);
+      var userid = "" + data[i].userid
+      var user = escapeHtml(userid);
+      if (app.friends.indexOf(user)!==-1) {
+          user = '<strong>' + user + '</strong>'
+        }
+        $('#chats').append(("<div><div class='message'>" +text+ "</div><div class='username'>" +user+ "</div><br/>"))
+      }
   },
 
   room: 'lobby',
@@ -115,7 +117,7 @@ $(document).ready(function() {
     app.init();
     setInterval(function(){
       $('.update').trigger('click');
-    }, 5000);
+    }, 15000);
 });
 
 
